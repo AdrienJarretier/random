@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>PI</title>
+        <meta charset="utf-8" />
+
+    </head>
+
+    <body>
+
+        <h1>one million decimals of PI</h1>
+        <h2>
+            each square represents 8 digits (so there is 125 000 squares) <br />
+            starting at 14159265
+        </h2>
+
+        <canvas id="canvasId" width="900" height="5600" style="border:1px solid #000000;">
+            Votre navigateur ne supporte pas les Canvas
+            HTML5.
+        </canvas>
+
+        <script>
+
+            var thecanvas = document.getElementById("canvasId");
+            var context = thecanvas.getContext("2d");
+
+
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.overrideMimeType('text/plain');
+            var url = "pi1000000.txt";
+
+            xmlhttp.onreadystatechange = function() {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                piColors( xmlhttp.responseText );
+
+                }
+
+            }
+
+            xmlhttp.open("GET", url, true);
+            xmlhttp.send();
+
+
+            const DECIMAL_PART_LENGTH = 8;
+            const EDGE_LENGTH = 6;
+            const MAX_RECTS = thecanvas.width/EDGE_LENGTH*(thecanvas.height/EDGE_LENGTH);
+
+            function encodeToColor(part) {
+
+                var encodedBaseTen = Math.floor(part*Math.pow(2,24)/Math.pow(10,DECIMAL_PART_LENGTH));
+
+                var encodedHex = encodedBaseTen.toString(16);
+
+                while( encodedHex.length < 6 ) {
+
+                    encodedHex = '0'+encodedHex;
+
+                }
+
+                return encodedHex;
+
+            }
+
+            function piColors(pi) {
+
+                piDecimals = pi.substr(2);
+
+                const MAX_DECIMALS = MAX_RECTS*DECIMAL_PART_LENGTH < piDecimals.length ? MAX_RECTS : piDecimals.length/DECIMAL_PART_LENGTH ;
+
+                for(var i=0; i<MAX_DECIMALS; i++) {
+
+                    var part = piDecimals.substr(i*DECIMAL_PART_LENGTH,DECIMAL_PART_LENGTH);
+
+                    var color = "#"+encodeToColor(part);
+
+
+                    context.beginPath();
+
+                    context.fillStyle = color;
+                    var x = i*EDGE_LENGTH%thecanvas.width;
+                    var y = Math.floor(i*EDGE_LENGTH/thecanvas.width)*EDGE_LENGTH;
+                    context.fillRect( x, y, EDGE_LENGTH, EDGE_LENGTH );
+
+                    context.closePath();
+
+                }
+
+            }
+
+
+           // setInterval(randDatas, 136);
+
+        </script>
+
+    </body>
+
+</html>
