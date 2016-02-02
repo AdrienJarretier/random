@@ -1,6 +1,6 @@
 echo "n" | sudo pacman -Syu > tmp
 cat tmp | grep Packages | sed "s/Packages (.*) //" > updates.txt
-rm tmp
+echo "" > tmp
 
 for word in $(cat updates.txt)
 do
@@ -17,4 +17,4 @@ do
 		echo "-------------------------------------------------------------------------------"
 	fi
 done
-rm updates.txt
+echo "" > updates.txt
