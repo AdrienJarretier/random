@@ -2,6 +2,7 @@ echo "n" | sudo pacman -Syu > tmp
 cat tmp | grep Packages | sed "s/Packages (.*) //" > updates.txt
 echo "" > tmp
 
+echo "packages wich are not dependencies : "
 for word in $(cat updates.txt)
 do
 	pacman -Qi $word 2> /dev/null
@@ -10,11 +11,11 @@ do
 		word=${word:0:-1}
 		ouput=$(pacman -Qi $word 2> /dev/null)
 	done
-	# echo $ouput | grep "Required By : None"
 	if [ $(echo "$ouput" | grep -c "Required By    : None") -eq 1  ]
 	then
 		echo "$ouput" | grep --color=always "Name\|Description\|Optional For\|Install Date\|Install Reason"
 		echo "-------------------------------------------------------------------------------"
 	fi
 done
+
 echo "" > updates.txt
