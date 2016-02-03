@@ -13,12 +13,14 @@ do
 		then
 		packageInfos=$line
 	else
-		packageInfos=$packageInfos" | "$line
-		echo $packageInfos
+		packageInfos=$line" | "$packageInfos
+		# echo $packageInfos | sed "s/\(.*\)|\(.*\)/\2\1/"
+		echo $packageInfos >> installedPackages.txt
 		count=0
 	fi
 	((count++))
 done
 IFS=$old_IFS
 
-echo "" > tmp
+echo -n "" > installedPackages.txt
+echo -n  "" > tmp
