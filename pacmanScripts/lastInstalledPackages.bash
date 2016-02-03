@@ -1,4 +1,4 @@
-pacman -Qei | grep "Name\|Install Date" > tmp
+LC_TIME="en_US.UTF-8" pacman -Qei | grep "Name\|Install Date" > tmp
 
 old_IFS=$IFS
 IFS=$'\n'
@@ -21,6 +21,8 @@ do
 	((count++))
 done
 IFS=$old_IFS
+
+# sort installedPackages.txt
 
 echo -n "" > installedPackages.txt
 echo -n  "" > tmp
