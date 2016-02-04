@@ -1,6 +1,8 @@
 TITLE="Most Recently installed Packages : "
 
-LC_TIME="en_US.UTF-8" pacman -Qei | grep "Name\|Install Date" > tmp
+TMP_DIR = $(mktemp -dp .)
+
+LC_TIME="en_US.UTF-8" pacman -Qei | grep "Name\|Install Date" > $TMP_DIR/tmp
 
 old_IFS=$IFS
 IFS=$'\n'
@@ -24,7 +26,7 @@ do
 		packageDateInstalled=$packageDateInstalled$(date --date=$dateInstalled +%c)
 
 		packageInfos=$packageName"|=> "$packageDateInstalled
-		echo $forSortdateInstalled$packageInfos >> installedPackages.txt
+		echo $forSortdateInstalled$packageInfos >> $TMP_DIR/installedPackages.txt
 
 		count=0
 	fi
@@ -38,5 +40,5 @@ printf "%*s\n" $(((${#TITLE}+$COLUMNS)/3)) "$TITLE"
 echo ""
 sort -r installedPackages.txt | sed "s/^....-..-.. ..:..:..//" |  column -t -s "|" | more -25
 
-echo -n "" > installedPackages.txt
-echo -n "" > tmp
+# echo -n "" > installedPackages.txt
+# echo -n "" > tmp
