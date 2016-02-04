@@ -1,9 +1,11 @@
-echo "n" | sudo pacman -Syu > tmp
-cat tmp | grep Packages | sed "s/Packages (.*) //" > updates.txt
+TMP_DIR=$(mktemp -dp .)
+
+echo "n" | sudo pacman -Syu > $TMP_DIR/tmp
+cat $TMP_DIR/tmp | grep Packages | sed "s/Packages (.*) //" > $TMP_DIR/updates.txt
 
 
 echo "packages wich are not dependencies : "
-for word in $(cat updates.txt)
+for word in $(cat $TMP_DIR/updates.txt)
 do
 	pacman -Qi $word 2> /dev/null
 	while [ $? -eq 1 ] && [ ${#word} -gt 1 ]
@@ -19,5 +21,4 @@ do
 	fi
 done
 
-echo -n "" > tmp
-echo -n "" > updates.txt
+rm -r $TMP_DIR
