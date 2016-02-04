@@ -5,7 +5,10 @@ UPDATE_COMMAND="sudo pacman -Syu chuck"
 echo "n" | $UPDATE_COMMAND > $TMP_DIR/tmp
 cat $TMP_DIR/tmp | grep Packages | sed "s/Packages (.*) //" > $TMP_DIR/updates.txt
 
+declare -a requiredByAnother
+declare -a notInstalled
 
+echo ""
 echo "packages wich are not dependencies : "
 for packageNewVersion in $(cat $TMP_DIR/updates.txt)
 do
@@ -23,10 +26,32 @@ do
 		echo "-------------------------------------------------------------------------------"
 	elif [ ${#word} -gt 1 ]
 		then
-		echo "required by another package : "$word
+		requiredByAnother[${#requiredByAnother[*]}]=$word
 	else
-		echo "not installed yet : "$packageNewVersion
+		notInstalled[${#notInstalled[*]}]=$packageNewVersion
 	fi
 done
+
+# for required in ${name[@]}
+# do
+# 	echo $required
+# done
+
+echo ""
+echo "package(s) required by other package(s) :"
+for package in ${requiredByAnother[@]}
+do
+echo $package
+done
+
+echo ""
+echo "new packages :"
+for package in ${notInstalled[@]}
+do
+echo $package
+done
+
+echo ""
+
 
 rm -r $TMP_DIR
