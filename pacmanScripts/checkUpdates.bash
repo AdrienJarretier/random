@@ -2,15 +2,17 @@ TMP_DIR=$(mktemp -dp .)
 
 UPDATE_COMMAND="sudo pacman -Syu chuck"
 
+BUFFER_FILE_UPDATES=$TMP_DIR/updates.txt
+
 echo "n" | $UPDATE_COMMAND > $TMP_DIR/tmp
-cat $TMP_DIR/tmp | grep Packages | sed "s/Packages (.*) //" > $TMP_DIR/updates.txt
+cat $TMP_DIR/tmp | grep Packages | sed "s/Packages (.*) //" > $BUFFER_FILE_UPDATES
 
 declare -a requiredByAnother
 declare -a notInstalled
 
 echo ""
 echo "packages wich are not dependencies : "
-for packageNewVersion in $(cat $TMP_DIR/updates.txt)
+for packageNewVersion in $(cat $BUFFER_FILE_UPDATES)
 do
 	word=$packageNewVersion
 	pacman -Qi $word 2> /dev/null
