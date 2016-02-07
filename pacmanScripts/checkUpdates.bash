@@ -1,6 +1,6 @@
 TMP_DIR=$(mktemp -dp .)
 
-UPDATE_COMMAND="sudo pacman -Syu chuck"
+UPDATE_COMMAND="sudo pacman -Syu"
 
 BUFFER_FILE_UPDATES=$TMP_DIR/updates.txt
 
