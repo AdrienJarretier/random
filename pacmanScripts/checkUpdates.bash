@@ -3,9 +3,10 @@ TMP_DIR=$(mktemp -dp .)
 UPDATE_COMMAND="sudo pacman -Syu"
 
 BUFFER_FILE_UPDATES=$TMP_DIR/updates.txt
+TMP_FILE=$TMP_DIR/tmp
 
-echo "n" | $UPDATE_COMMAND > $TMP_DIR/tmp
-cat $TMP_DIR/tmp | grep Packages | sed "s/Packages (.*) //" > $BUFFER_FILE_UPDATES
+echo "n" | $UPDATE_COMMAND > $TMP_FILE
+cat $TMP_FILE | grep Packages | sed "s/Packages (.*) //" > $BUFFER_FILE_UPDATES
 
 declare -a requiredByAnother
 declare -a notInstalled
