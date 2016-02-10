@@ -20,16 +20,18 @@ do
 	while [ $? -eq 1 ] && [ ${#word} -gt 1 ]
 	do
 		word=${word:0:-1}
-		ouput=$(pacman -Qi $word 2> /dev/null)
+		output=$(pacman -Qi $word 2> /dev/null)
 	done
 
-	if [ $(echo "$ouput" | grep -c "Required By  *:  *None") -eq 1  ]
+	if [ $(echo "$output" | grep -c "Required By  *:  *None") -eq 1  ]
 		then
-		echo "$ouput" | grep --color=always "Name\|Description\|Optional For\|Install Date\|Install Reason"
+		echo "$output" | grep --color=always "Name\|Description\|Optional For\|Install Date\|Install Reason"
 		echo "-------------------------------------------------------------------------------"
 	elif [ ${#word} -gt 1 ]
 		then
 		requiredByAnother[${#requiredByAnother[*]}]=$word
+		requiredByAnother[${#requiredByAnother[*]}]="  "$(echo "$output" | grep Description)
+		requiredByAnother[${#requiredByAnother[*]}]="  "$(echo "$output" | grep Required)
 	else
 		notInstalled[${#notInstalled[*]}]=$packageNewVersion
 	fi
@@ -42,14 +44,15 @@ done
 
 echo ""
 echo "package(s) required by other package(s) :"
-for package in ${requiredByAnother[@]}
+for ((i = 0; i < ${#requiredByAnother[@]}; i++))
 do
-echo $package
+	package=${requiredByAnother[$i]}
+	echo "$package" | sed "s/  *:/ :/"
 done
 
 echo ""
 echo "new packages :"
-for package in ${notInstalled[@]}
+for package in "${notInstalled[@]}"
 do
 echo $package
 done
