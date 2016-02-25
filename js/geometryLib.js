@@ -6,10 +6,21 @@ This file contains classes and functions related to geometry
 
 
 /**
+ * Creates a new Circle at a given position witht the speicifed radius
+ * @class
+ */
+var Circle = function(_position, _radius) {
+
+    this.position = _position; // Point
+    this.radius = _radius; // non null positive Number
+
+}
+
+/**
  * Creates a new Point in 2D space
  * @class
  */
-var Point =  function(_x, _y) {
+var Point = function(_x, _y) {
 
     this.x = _x;
     this.y = _y;
