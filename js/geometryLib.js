@@ -4,48 +4,56 @@ This file contains classes and functions related to geometry
 
 */
 
+var Geometry = {
 
-/**
- * Creates a new Circle at a given position witht the speicifed radius
- * @class
- */
-var Circle = function(_position, _radius) {
+    /**
+     * Creates a new Circle at a given position witht the speicifed radius
+     * @class
+     */
+    Circle : function(_position, _radius) {
 
-    this.position = _position; // Point
-    this.radius = _radius; // non null positive Number
+        this.position = _position; // Point
+        this.radius = _radius; // non null positive Number
 
-}
+    },
 
-/**
- * Creates a new Point in 2D space
- * @class
- */
-var Point = function(_x, _y) {
+    /**
+     * Creates a new Point in 2D space
+     * @class
+     */
+    Point : function(_x, _y) {
 
-    this.x = _x;
-    this.y = _y;
+        this.x = _x;
+        this.y = _y;
 
-    this.distanceTo = function( _otherPoint ) {
+        this.distanceTo = function( _otherPoint ) {
 
-        return Math.sqrt(
-         ( this.x - _autrePoint.x )*( this.x - _autrePoint.x )
-        +( this.y - _autrePoint.y )*( this.y - _autrePoint.y )
-        );
+            return Math.sqrt(
+             ( this.x - _autrePoint.x )*( this.x - _autrePoint.x )
+            +( this.y - _autrePoint.y )*( this.y - _autrePoint.y )
+            );
+
+        }
+
+        this.times = function( _factor ) {
+
+            return new Geometry.Point(this.x*_factor, this.y*_factor);
+
+        }
+
+    },
+
+    /**
+     * Return a random Signed Integer between min and max included
+     *
+     * @param {Signed Integer} min - lower bound (included)
+     * @param {Signed Integer} max - upper bound (included)
+     *
+     * @returns {Signed Integer}
+     */
+    randomNb : function(min, max) {
+
+        return Math.floor(Math.random()*(max-min+1))+min;
 
     }
-
-};
-
-/**
- * Return a random Signed Integer between min and max included
- *
- * @param {Signed Integer} min - lower bound (included)
- * @param {Signed Integer} max - upper bound (included)
- *
- * @returns {Signed Integer}
- */
-function randomNb(min, max) {
-
-    return Math.floor(Math.random()*(max-min+1))+min;
-
 }
