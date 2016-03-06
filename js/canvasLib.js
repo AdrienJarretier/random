@@ -6,12 +6,14 @@ This file contains classes and functions for HTML 5 canvas
 
 var Canvas = {
 
+
+
 	nextParticleId : 0,
-	Particle : function(_cirle, _color, _velocity) {
+	Particle : function(_geometryShape, _color, _velocity) {
 
 	    this.id = Canvas.nextParticleId++; // int
 
-	    this.circle = _cirle; // Circle
+	    this.geometryShape = _geometryShape; // Circle , Rectangle ...
 	    this.color = _color; // String
 	    this.velocity = _velocity.times(1/1000); // Point in pixels/ms
 
@@ -19,17 +21,22 @@ var Canvas = {
 
         this.lastTimeMoved = (new Date()).getTime();
 
-	    this.draw = function() {
+	    this.draw = function( _context ) {
 
-            context.beginPath();
+            _context.beginPath();
 
-            context.fillStyle = this.color;
+            _context.fillStyle = this.color;
 
-            context.arc( this.circle.position.x, this.circle.position.y, this.circle.radius, 0, 2*Math.PI );
+            if( this.geometryShape.shapeType == "CIRCLE" ) {
+            	_context.arc( this.geometryShape.position.x, this.geometryShape.position.y, this.geometryShape.radius, 0, 2*Math.PI );
+            }
+            else if( this.geometryShape.shapeType == "RECTANGLE" ) {
+            	_context.fillRect( this.geometryShape.position.x, this.geometryShape.position.y, this.geometryShape.dimensions.x, this.geometryShape.dimensions.y );
+            }
 
-            context.fill();
+            _context.fill();
 
-            context.closePath();
+            _context.closePath();
 
 	    }
 
@@ -41,10 +48,10 @@ var Canvas = {
             const deltaVelocity = this.velocity.times( deltaT );
 
 
-            if( ( this.circle.position.x + deltaVelocity.x + this.rayon > theCanvas.width
+            if( ( this.geometryShape.position.x + deltaVelocity.x + this.rayon > theCanvas.width
                     && this.velocity.x > 0
                 )
-             || (this.circle.position.x + deltaVelocity.x - this.rayon < 0
+             || (this.geometryShape.position.x + deltaVelocity.x - this.rayon < 0
                     && this.velocity.x < 0
                 ) ) {
 
@@ -52,10 +59,10 @@ var Canvas = {
 
             }
 
-            if( ( this.circle.position.y + deltaVelocity.y + this.rayon > theCanvas.height
+            if( ( this.geometryShape.position.y + deltaVelocity.y + this.rayon > theCanvas.height
                     && this.velocity.y > 0
                 )
-             || (this.circle.position.y + deltaVelocity.y - this.rayon < 0
+             || (this.geometryShape.position.y + deltaVelocity.y - this.rayon < 0
                     && this.velocity.y < 0
                 ) ) {
 
@@ -63,8 +70,8 @@ var Canvas = {
 
             }
 
-            this.circle.position.x += Math.floor(deltaVelocity.x);
-            this.circle.position.y += Math.floor(deltaVelocity.y);
+            this.geometryShape.position.x += Math.floor(deltaVelocity.x);
+            this.geometryShape.position.y += Math.floor(deltaVelocity.y);
 
         }
 

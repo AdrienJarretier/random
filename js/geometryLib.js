@@ -7,13 +7,58 @@ This file contains classes and functions related to geometry
 var Geometry = {
 
     /**
-     * Creates a new Circle at a given position witht the speicifed radius
+     * Creates a new Circle at a given position witht the specifed radius
      * @class
      */
     Circle : function(_position, _radius) {
 
+        this.shapeType = "CIRCLE";
+
         this.position = _position; // Point
         this.radius = _radius; // non null positive Number
+
+        this.volume = Math.PI*this.radius*this.radius;
+
+    },
+
+    /**
+     * Creates a new Rectangle at a given position with the specifed size
+     * @class
+     */
+    Rectangle : function(_position, _dimensions) {
+
+        this.shapeType = "RECTANGLE";
+
+        this.position = _position; // Point
+        this.dimensions = _dimensions; // Point
+
+        this.volume = this.dimensions.x*this.dimensions.y;
+
+
+        /**
+         * increases the volmume by modifying one of the dimensions
+         *
+         * @param {Number} _volumeToAdd - volume that will be added to this object
+         * @param {String} _dimensionToMod - "h" or "v"
+         *
+         * @returns {Signed Integer}
+         */
+        this.increaseVolume = function( _volumeToAdd , _dimensionToMod ) {
+
+            this.volume += _volumeToAdd;
+
+            if ( _dimensionToMod == "h" ) {
+
+                this.dimensions.x = this.volume/this.dimensions.y;
+
+            }
+            else {
+
+                this.dimensions.y = this.volume/this.dimensions.x;
+
+            }
+
+        }
 
     },
 
