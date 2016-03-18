@@ -74,8 +74,8 @@ var Geometry = {
         this.distanceTo = function( _otherPoint ) {
 
             return Math.sqrt(
-             ( this.x - _autrePoint.x )*( this.x - _autrePoint.x )
-            +( this.y - _autrePoint.y )*( this.y - _autrePoint.y )
+             ( this.x - _otherPoint.x )*( this.x - _otherPoint.x )
+            +( this.y - _otherPoint.y )*( this.y - _otherPoint.y )
             );
 
         }
